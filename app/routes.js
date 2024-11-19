@@ -3,13 +3,13 @@ module.exports = function(app, passport, db) {
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    app.get('/', function(req, res) {
+    app.get('/landingpage', function(req, res) {
         res.render('index.ejs');
     });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
+        db.collection('professional-user').find().toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
@@ -28,19 +28,27 @@ module.exports = function(app, passport, db) {
 
 // message board routes ===============================================================
 
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0}, (err, result) => {
+    app.post('/professionalform', (req, res) => {
+      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
-        res.redirect('/profile')
+        res.redirect('/professionalprofilepage')
       })
     })
 
-    app.put('/messages', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+    app.get('professionalprofilepage', (req, res) => {
+      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/professionalprofilepage')
+    })
+  })
+
+    app.put('/editpage', (req, res) => {
+      db.collection('professional-user')
+      .findOneAndUpdate({salonname: req.body.nameofsalon, role: req.body.role}, {
         $set: {
-          thumbUp:req.body.thumbUp + 1
+          salonname: req.body.newnameofsalon, role: req.body.newrole
         }
       }, {
         sort: {_id: -1},
@@ -51,23 +59,9 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    app.put('/messagesdown', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
-        $set: {
-          thumbUp:req.body.thumbUp - 1
-        }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
-    })
 
     app.delete('/messages', (req, res) => {
-      db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
+      db.collection('professional-user').findOneAndDelete({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })

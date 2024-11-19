@@ -1,25 +1,63 @@
 <!doctype html>
 <html>
 <head>
-    <title>21 Savage Fan Site</title>
+    <title>aje beauty</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="container">
 
-    <div class="jumbotron text-center">
-        <h1>21 Savage Fan Site</h1>
-        <img src="img/savage21.jpg" alt="21 Savage Profile Photo">
+  <header>
+    <h1>aje beauty</h1>
+    <a href="/login" class="btn btn-default btn-sm login">Login</a>
+    <a href="/signup" class="btn btn-default btn-sm signUp">Sign Up</a>
+  </header>
 
-        <p>Login or Signup:</p>
+        
+  <section>
+    <form action="/messages" method="POST">
+      <input class="search" type="text" placeholder="Service, stylist, salon" name="msg">
+      <button type="submit">Search</button>
+    </form>
+  </section>
+ 
+  <h2>browse by services</h2>
+  <section class="middle services">
+    
+    <section>
 
-        <a href="/login" class="btn btn-default"><span class="fa fa-user"></span>Login</a>
-        <a href="/signup" class="btn btn-default"><span class="fa fa-user"></span>Signup</a>
+      <h3>silk press</h3>
+    </section>
+    <section>
+      <h3>braids</h3>
+    </section>
+    <section>
+      <h3>locs</h3>
+    </section>
+    <section>
+      <h3>hair cuts</h3>
+    </section>
 
-    </div>
 
-</div>
+  </section>
+
+  <h2>Top-rated beauty professionals</h2>
+  <section class="featured bottom">
+    <section>
+    
+    </section>
+    <section>
+      
+    </section>
+    <section>
+    
+    </section>
+  </section>
+  
+
+
+<script src="main.js"></script>
+
 </body>
 </html>

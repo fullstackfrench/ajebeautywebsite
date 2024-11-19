@@ -1,71 +1,88 @@
-var thumbUp = document.getElementsByClassName("fa-thumbs-up");
-var thumbDown = document.getElementsByClassName("fa-thumbs-down");
-var trash = document.getElementsByClassName("fa-trash-o");
 
-Array.from(thumbUp).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-        fetch('messages', {
-          method: 'put',
-          headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg,
-            'thumbUp':thumbUp
-          })
-        })
-        .then(response => {
-          if (response.ok) return response.json()
-        })
-        .then(data => {
-          console.log(data)
-          window.location.reload(true)
-        })
-      });
-});
+document.querySelector('#btn-lg').addEventListener('click', professionalform())
 
-Array.from(thumbDown).forEach(function(element) {
-  element.addEventListener('click', function(){
-    const name = this.parentNode.parentNode.childNodes[1].innerText
-    const msg = this.parentNode.parentNode.childNodes[3].innerText
-    const thumbUp = parseFloat(this.parentNode.parentNode.childNodes[5].innerText)
-    console.log('Thumb down working')
-    fetch('messagesdown', {
-      method: 'put',
-      headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({
-        'name': name,
-        'msg': msg,
-        'thumbUp':thumbUp
-      })
+function professionalform() {
+  fetch('professionalform', {
+    method: 'post',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      'nameofsalon': document.querySelector('#business-name').innerText,
+      'role': document.querySelector('#role select option:checked').value,
+      //I will add other inputs from the form
+  
+      
+      
     })
-    .then(response => {
-      if (response.ok) return response.json()
-    })
-    .then(data => {
-      console.log(data)
-      window.location.reload(true)
-    })
-  });
-});
+  })
+  .then(response => {
+    if (response.ok) return response.json()
+  })
+  .then(data => {
+    console.log(data)
+    window.location.reload(true)
+  })
+}
 
-Array.from(trash).forEach(function(element) {
-      element.addEventListener('click', function(){
-        const name = this.parentNode.parentNode.childNodes[1].innerText
-        const msg = this.parentNode.parentNode.childNodes[3].innerText
-        fetch('messages', {
-          method: 'delete',
-          headers: {
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            'name': name,
-            'msg': msg
-          })
-        }).then(function (response) {
-          window.location.reload()
-        })
-      });
+
+
+fetch('landingpage', {
+  method: 'get',
+  headers: {'Content-Type': 'application/json'},
+  body: JSON.stringify({
+    'nameofsalon': document.querySelector('#business-name').innerText,
+    'role': document.querySelector('#role select option:checked').value,
+    //I will add other inputs from the form
+
+    
+    
+  })
+})
+.then(response => {
+  if (response.ok) return response.json()
+})
+.then(data => {
+  console.log(data)
+  window.location.reload(true)
+})
+
+document.querySelector('.edit').addEventListener('click', edit())
+
+function edit() {
+  fetch('editpage', {
+    method: 'put',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      'nameofsalon': document.querySelector('#business-name').innerText,
+      'newnameofsalon': document.querySelector('#new-business-name').value,
+      'role': document.querySelector('#role select option:checked').value,
+      'newrole': document.querySelector('#role select option:checked').value
+      //I will add other inputs from the form
+  
+      
+      
+    })
+  })
+  .then(response => {
+    if (response.ok) return response.json()
+  })
+  .then(data => {
+    console.log(data)
+    window.location.reload(true)
+  })
+}
+
+
+fetch('profilepage', {
+  method: 'delete',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    'nameofsalon': document.querySelector('#business-name').innerText,
+    'newnameofsalon': document.querySelector('#new-business-name').value,
+    'role': document.querySelector('#role select option:checked').value,
+    'newrole': document.querySelector('#role select option:checked').value
+    //I will add other inputs from the form
+  })
+})
+.then(response => {
+  window.location.reload(true); 
 });
