@@ -10,15 +10,14 @@
 
   <header>
     <h1>aje beauty</h1>
-    <a href="/login" class="btn btn-default btn-sm login">Login</a>
-    <a href="/signup" class="btn btn-default btn-sm signUp">Sign Up</a>
   </header>
 
-        
- <section>
-  <form>
+  <h2>Set Up Your Professional Profile</h2>
+ 
+  <section>
+  <form method="post">
     <input type="type" name="name">
-    <input type="type" name="business-name" id="business-name">
+    <input type="type" name="businessname" id="business-name">
     <select name="role" id="role">
       <option>Hairstylist</option>
       <option>Barber</option>
@@ -26,13 +25,13 @@
       <option>Esthetician</option>
     </select>
     <div>
-      <input type="checkbox" id="silk-press">
+      <input type="checkbox" id="silk-press" name="silkpress">
       <label for="silk-press">Silk Press</label>
-      <input type="checkbox" id="braids">
+      <input type="checkbox" id="braids" name="braids">
       <label for="braids">Braids</label>
-      <input type="checkbox" id="locs">
+      <input type="checkbox" id="locs" name="locs">
       <label for="locs">Locs/Retwists</label>
-      <input type="checkbox" id="curly-cuts">
+      <input type="checkbox" id="curly-cuts" name="curlycuts">
       <label for="curly-cuts">Curly Cuts</label>
     </div>
     
@@ -48,7 +47,7 @@
  
 
 
-<script src="main.js"></script>
+
 
 </body>
 </html>

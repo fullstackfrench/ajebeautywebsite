@@ -9,17 +9,17 @@
 <body>
 
   <header>
-    <h1><%=professional-user.business-name %></h1>
+    <h1><%=user.local.businessName %></h1>
     <a href="/login" class="btn btn-default btn-sm login">Login</a>
   </header>
 
 
   <section>
-    <h3><%=professional-user.name %></h3>
-    <p><%=professional-user.role %></p>
-    <h4>Service</h4>
+    <h3><%=user.local.username %></h3>
+    <p><%=user.local.role %></p>
+    <h4>Services</h4>
     <ul>
-      <li><%=professional-user.services %></li>
+      <li><%=user.local.services %></li>
     </ul>
   </section>
         
@@ -32,7 +32,8 @@
     </section>
   </section>
 
-  
+  <button class="reviews">See Reviews</button>
+
   <button class="edit">Edit</button>
 
 <script src="main.js"></script>

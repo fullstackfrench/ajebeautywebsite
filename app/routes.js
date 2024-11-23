@@ -3,18 +3,14 @@ module.exports = function(app, passport, db) {
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
-    app.get('/landingpage', function(req, res) {
+    app.get('/', function(req, res) {
         res.render('index.ejs');
     });
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('professional-user').find().toArray((err, result) => {
-          if (err) return console.log(err)
-          res.render('profile.ejs', {
-            user : req.user,
-            messages: result
-          })
+      res.render(req.user.local.userType == 'professional' ?'professional-profile-page.ejs' : 'client-profile-page.ejs', {
+            user : req.user
         })
     });
 
@@ -26,23 +22,24 @@ module.exports = function(app, passport, db) {
         res.redirect('/');
     });
 
-// message board routes ===============================================================
+// professional pages' routes ===============================================================
 
-    app.post('/professionalform', (req, res) => {
-      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
-        if (err) return console.log(err)
+    app.post('/professionalform', isLoggedIn, (req, res) => {
+      req.user.local.businessName = req.body.businessname
+      req.user.local.role = req.body.role
+      req.user.local.services = ['silkpress', 'braids', 'locs', 'curlycuts'].filter(service => req.body[service]).join(', ')
+      req.user.save()
         console.log('saved to database')
-        res.redirect('/professionalprofilepage')
+        res.redirect('/profile')
       })
+
+    app.get('/professionalform', (req, res) => {
+      res.render('professional-profile-form.ejs')
+
     })
 
-    app.get('professionalprofilepage', (req, res) => {
-      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/professionalprofilepage')
-    })
-  })
+
+
 
     app.put('/editpage', (req, res) => {
       db.collection('professional-user')
@@ -59,6 +56,7 @@ module.exports = function(app, passport, db) {
       })
     })
 
+    
 
     app.delete('/messages', (req, res) => {
       db.collection('professional-user').findOneAndDelete({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
@@ -66,6 +64,25 @@ module.exports = function(app, passport, db) {
         res.send('Message deleted!')
       })
     })
+
+    // other routes ===============================================================
+
+    app.get('/searchresults', (req, res) => {
+      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/professionalprofilepage')
+      })
+    })
+
+    app.get('/reviews', (req, res) => {
+      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+        if (err) return console.log(err)
+        console.log('saved to database')
+        res.redirect('/professionalprofilepage')
+      })
+    })
+
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -93,7 +110,7 @@ module.exports = function(app, passport, db) {
 
         // process the signup form
         app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/professionalform', // redirect to the secure profile section
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
