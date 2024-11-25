@@ -1,118 +1,43 @@
+document.querySelector('.delete').addEventListener('click', deleteAccount)
 
-document.querySelector('#btn-lg').addEventListener('click', professionalform())
-
-function professionalform() {
-  fetch('professionalform', {
-    method: 'get',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      'nameofsalon': document.querySelector('#business-name').innerText,
-      'role': document.querySelector('#role select option:checked').value,
-      //I will add other inputs from the form
-  
-      
-      
-    })
+function deleteAccount() {
+  fetch('profile', {
+    method: 'delete',
+    headers: { 'Content-Type': 'application/json' }
   })
   .then(response => {
-    if (response.ok) return response.json()
-  })
-  .then(data => {
-    console.log(data)
-    window.location.reload(true)
-  })
+    window.location.reload(true); 
+  });
 }
 
+document.querySelector('.edit').addEventListener('click', editButton)
 
+function editButton() {
+  document.querySelector('.newRole').classList.toggle('showInput')
+  document.querySelector('.submit').classList.toggle('showInput')
+  document.querySelector('.newBusinessName').classList.toggle('showInput')
+}
 
+document.querySelector('.submit').addEventListener('click', submitChanges)
 
-
-document.querySelector('.edit').addEventListener('click', edit())
-
-function edit() {
-  fetch('editpage', {
+function submitChanges() {
+  fetch('profileupdated', {
     method: 'put',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      'nameofsalon': document.querySelector('#business-name').innerText,
-      'newnameofsalon': document.querySelector('#new-business-name').value,
-      'role': document.querySelector('#role select option:checked').value,
-      'newrole': document.querySelector('#role select option:checked').value
-      //I will add other inputs from the form
-  
-      
+      'role': document.querySelector('.role').innerText,
+      'newRole': document.querySelector('.newRole').value,
+      'businessName': document.querySelector('.businessName').innerText,
+      'newBusinessName': document.querySelector('.newBusinessName').value
       
     })
+    
   })
   .then(response => {
-    if (response.ok) return response.json()
+    if (response.ok) return response.json();
   })
   .then(data => {
-    console.log(data)
-    window.location.reload(true)
-  })
-}
-
-
-fetch('profilepage', {
-  method: 'delete',
-  headers: { 'Content-Type': 'application/json' },
-  body: JSON.stringify({
-    'nameofsalon': document.querySelector('#business-name').innerText,
-    'newnameofsalon': document.querySelector('#new-business-name').value,
-    'role': document.querySelector('#role select option:checked').value,
-    'newrole': document.querySelector('#role select option:checked').value
-    //I will add other inputs from the form
-  })
-})
-.then(response => {
-  window.location.reload(true); 
-});
-
-document.querySelector('.search-button').addEventListener('click', showsearchresults())
-
-function showsearchresults() {
-  fetch('searchresults', {
-    method: 'get',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      'nameofsalon': document.querySelector('#business-name').innerText,
-      'role': document.querySelector('#role select option:checked').value,
-      //I will add other inputs from the form
-  
-      
-      
-    })
-  })
-  .then(response => {
-    if (response.ok) return response.json()
-  })
-  .then(data => {
-    console.log(data)
-    window.location.reload(true)
-  })
-}
-
-document.querySelector('.reviews').addEventListener('click', showreviews())
-
-function showsearchresults() {
-  fetch('reviews', {
-    method: 'get',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({
-      'nameofsalon': document.querySelector('#business-name').innerText,
-      'role': document.querySelector('#role select option:checked').value,
-      //I will add other inputs from the form
-  
-      
-      
-    })
-  })
-  .then(response => {
-    if (response.ok) return response.json()
-  })
-  .then(data => {
-    console.log(data)
-    window.location.reload(true)
-  })
+    console.log(data);
+    window.location.reload(true); 
+  });
 }

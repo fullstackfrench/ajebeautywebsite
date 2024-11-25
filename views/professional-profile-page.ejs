@@ -9,14 +9,16 @@
 <body>
 
   <header>
-    <h1><%=user.local.businessName %></h1>
-    <a href="/login" class="btn btn-default btn-sm login">Login</a>
+    <h1 class="businessName"><%=user.local.businessName %></h1>
+    <input type="text" class="newBusinessName" name="newBusinessName" value="<%=user.local.businessName %>">
+    <a href="/logout" class="btn btn-default btn-sm login">Logout</a>
   </header>
 
 
   <section>
     <h3><%=user.local.username %></h3>
-    <p><%=user.local.role %></p>
+    <p class="role"><%=user.local.role %></p>
+    <input class="newRole" type="text" name="newRole" value="<%=user.local.role %>">
     <h4>Services</h4>
     <ul>
       <li><%=user.local.services %></li>
@@ -35,6 +37,10 @@
   <button class="reviews">See Reviews</button>
 
   <button class="edit">Edit</button>
+  
+  <button class="submit">Submit</button>
+
+  <button class="delete">Delete Account</button>
 
 <script src="main.js"></script>
 

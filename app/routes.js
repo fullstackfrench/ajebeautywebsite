@@ -1,5 +1,5 @@
 module.exports = function(app, passport, db) {
-
+  const {ObjectId} = require('mongodb')
 // normal routes ===============================================================
 
     // show the home page (will also have our login links)
@@ -25,9 +25,9 @@ module.exports = function(app, passport, db) {
 // professional pages' routes ===============================================================
 
     app.post('/professionalform', isLoggedIn, (req, res) => {
-      req.user.local.businessName = req.body.businessname
+      req.user.local.businessName = req.body.businessName
       req.user.local.role = req.body.role
-      req.user.local.services = ['silkpress', 'braids', 'locs', 'curlycuts'].filter(service => req.body[service]).join(', ')
+      req.user.local.services = ['Silk-press', 'Braids', 'Locs', 'Curly-cuts'].filter(service => req.body[service.toLowerCase().replace('-', '')]).join(', ')
       req.user.save()
         console.log('saved to database')
         res.redirect('/profile')
@@ -41,25 +41,33 @@ module.exports = function(app, passport, db) {
 
 
 
-    app.put('/editpage', (req, res) => {
-      db.collection('professional-user')
-      .findOneAndUpdate({salonname: req.body.nameofsalon, role: req.body.role}, {
-        $set: {
-          salonname: req.body.newnameofsalon, role: req.body.newrole
-        }
-      }, {
-        sort: {_id: -1},
-        upsert: true
-      }, (err, result) => {
-        if (err) return res.send(err)
-        res.send(result)
-      })
+    app.put('/profileupdated', (req, res) => {
+      console.log('Profile Updated', req.body)
+      console.log('req.user', req.user)
+      // db.collection('users')
+      // .findOneAndUpdate({_id: ObjectId(req.user._id) }, {
+      //   $set: {
+      //      local: {businessName: req.body.newBusinessName, role: req.body.newRole}
+      //   }
+      // }, {
+      //   sort: {_id: -1},
+      //   upsert: true
+      // }, (err, result) => {
+      //   if (err) return res.send(err)
+
+      //   res.send(result)
+      //   console.log('Result from profile updated', result)
+      // })
+    req.user.local.businessName = req.body.newBusinessName
+    req.user.local.role = req.body.newRole
+    req.user.save()
+    res.send({status: 'okay'})
     })
 
     
 
-    app.delete('/messages', (req, res) => {
-      db.collection('professional-user').findOneAndDelete({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+    app.delete('/profile', (req, res) => {
+      db.collection('users').findOneAndDelete({_id: ObjectId(req.user._id)}, (err, result) => {
         if (err) return res.send(500, err)
         res.send('Message deleted!')
       })
@@ -67,21 +75,21 @@ module.exports = function(app, passport, db) {
 
     // other routes ===============================================================
 
-    app.get('/searchresults', (req, res) => {
-      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/professionalprofilepage')
-      })
-    })
+    // app.get('/searchresults', (req, res) => {
+    //   db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+    //     if (err) return console.log(err)
+    //     console.log('saved to database')
+    //     res.redirect('/professionalprofilepage')
+    //   })
+    // })
 
-    app.get('/reviews', (req, res) => {
-      db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
-        if (err) return console.log(err)
-        console.log('saved to database')
-        res.redirect('/professionalprofilepage')
-      })
-    })
+    // app.get('/reviews', (req, res) => {
+    //   db.collection('professional-user').save({salonname: req.body.nameofsalon, role: req.body.role}, (err, result) => {
+    //     if (err) return console.log(err)
+    //     console.log('saved to database')
+    //     res.redirect('/professionalprofilepage')
+    //   })
+    // })
 
 
 // =============================================================================
